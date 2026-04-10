@@ -3,12 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>StexSMS Premium Access</title>
+    <title>Premium Access - StexSMS & MK Network</title>
     
-    <!-- Telegram Web App SDK (মিনি অ্যাপ্লিকেশনের জন্য) -->
+    <!-- Telegram Web App SDK -->
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
 
-    <!-- আপনার দেওয়া Ad SDK Script -->
+    <!-- Ad SDK Script -->
     <script src='//libtl.com/sdk.js' data-zone='10714987' data-sdk='show_10714987'></script>
 
     <style>
@@ -17,111 +17,113 @@
             font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             display: flex;
-            justify-content: center;
+            flex-direction: column;
             align-items: center;
-            height: 100vh;
-            overflow: hidden;
+            min-height: 100vh;
+            padding: 20px 0;
+            overflow-y: auto;
             background-color: var(--tg-theme-bg-color, #f4f4f4); 
+        }
+
+        .container {
+            width: 90%;
+            max-width: 400px;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            padding-bottom: 30px;
         }
 
         .card {
             background: rgba(255, 255, 255, 0.95);
             backdrop-filter: blur(10px);
-            padding: 35px 30px;
+            padding: 25px 20px;
             border-radius: 20px;
-            box-shadow: 0 20px 40px rgba(0,0,0,0.2);
-            width: 90%;
-            max-width: 400px;
+            box-shadow: 0 15px 30px rgba(0,0,0,0.2);
             text-align: center;
         }
 
         .header-icon {
             background: linear-gradient(135deg, #667eea, #764ba2);
-            width: 60px;
-            height: 60px;
+            width: 50px;
+            height: 50px;
             border-radius: 50%;
             display: flex;
             justify-content: center;
             align-items: center;
-            margin: 0 auto 15px auto;
+            margin: 0 auto 10px auto;
             color: white;
-            font-size: 24px;
-            box-shadow: 0 10px 20px rgba(118, 75, 162, 0.3);
+            font-size: 20px;
+            box-shadow: 0 5px 15px rgba(118, 75, 162, 0.3);
         }
 
-        h2 { color: #2d3748; font-size: 24px; margin-bottom: 25px; font-weight: 700; }
+        h2 { color: #2d3748; font-size: 20px; margin-bottom: 15px; font-weight: 700; border-bottom: 2px solid #eee; padding-bottom: 10px; }
 
         .info-group {
             display: flex;
             justify-content: space-between;
             align-items: center;
             background: #f7fafc;
-            padding: 15px 20px;
+            padding: 12px 15px;
             border-radius: 12px;
-            margin-bottom: 15px;
+            margin-bottom: 10px;
             border: 1px solid #e2e8f0;
         }
 
-        .details { text-align: left; }
-        .label { font-size: 11px; color: #718096; text-transform: uppercase; font-weight: 700; letter-spacing: 1px; display: block; margin-bottom: 4px; }
-        .value { font-size: 16px; color: #1a202c; font-weight: 600; }
+        .details { text-align: left; overflow: hidden; }
+        .label { font-size: 10px; color: #718096; text-transform: uppercase; font-weight: 700; display: block; }
+        .value { font-size: 14px; color: #1a202c; font-weight: 600; word-break: break-all; }
 
         .copy-btn {
             background: #edf2f7;
             color: #4a5568;
             border: none;
-            padding: 10px 16px;
+            padding: 8px 12px;
             border-radius: 8px;
             cursor: pointer;
-            font-size: 13px;
+            font-size: 12px;
             font-weight: 700;
-            transition: all 0.2s ease;
             display: flex;
             align-items: center;
-            gap: 5px;
+            gap: 4px;
+            flex-shrink: 0;
         }
-        .copy-btn:hover { background: #e2e8f0; color: #2d3748; }
+        .copy-btn:hover { background: #e2e8f0; }
 
-        /* ইনস্ট্যান্ট লগইন বাটন */
         .login-btn {
             display: block;
             width: 100%;
             background: linear-gradient(135deg, #38b2ac 0%, #319795 100%);
             color: white;
             text-decoration: none;
-            padding: 16px;
+            padding: 14px;
             border-radius: 12px;
-            font-size: 18px;
+            font-size: 16px;
             font-weight: bold;
-            margin-top: 25px;
+            margin-top: 15px;
             cursor: pointer;
-            transition: all 0.3s ease;
-            box-shadow: 0 10px 20px rgba(49, 151, 149, 0.3);
             border: none;
+            transition: 0.3s;
         }
-        .login-btn:hover { background: linear-gradient(135deg, #319795 0%, #2c7a7b 100%); box-shadow: 0 15px 25px rgba(49, 151, 149, 0.4); transform: translateY(-2px); }
+        .login-btn:hover { transform: translateY(-2px); opacity: 0.9; }
 
-        /* অ্যাডের জন্য আলাদা সাপোর্ট বাটন */
+        .mk-btn {
+            background: linear-gradient(135deg, #4299e1 0%, #3182ce 100%);
+        }
+
         .support-btn {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            width: 100%;
-            background: rgba(255, 255, 255, 0.6);
+            background: rgba(255, 255, 255, 0.8);
             color: #4a5568;
             border: 1px solid #cbd5e0;
             padding: 12px;
             border-radius: 12px;
             font-size: 14px;
             font-weight: 600;
-            margin-top: 15px;
             cursor: pointer;
-            transition: all 0.3s ease;
-            gap: 8px;
+            margin-top: 10px;
+            width: 100%;
         }
-        .support-btn:hover { background: rgba(255, 255, 255, 0.9); color: #2d3748; }
 
-        /* টোস্ট নোটিফিকেশন */
         #toast {
             position: fixed;
             bottom: -60px;
@@ -132,133 +134,129 @@
             padding: 12px 24px;
             border-radius: 30px;
             font-size: 14px;
-            font-weight: 600;
-            box-shadow: 0 10px 20px rgba(0,0,0,0.2);
-            transition: bottom 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
             z-index: 1000;
+            transition: 0.4s;
         }
         #toast.show { bottom: 30px; }
-
-        svg { width: 16px; height: 16px; fill: currentColor; }
+        svg { width: 14px; height: 14px; fill: currentColor; }
     </style>
 </head>
 <body>
 
-<div class="card">
-    <div class="header-icon">
-        <svg viewBox="0 0 24 24" style="width: 30px; height: 30px;"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>
-    </div>
-    <h2>StexSMS Access</h2>
+<div class="container">
+    
+    <!-- সার্ভিস ১: StexSMS -->
+    <div class="card">
+        <div class="header-icon">📲</div>
+        <h2>StexSMS Access</h2>
 
-    <div class="info-group">
-        <div class="details">
-            <span class="label">ইমেইল (Email)</span>
-            <span class="value" id="emailText">hbxmethod@gmail.com</span>
+        <div class="info-group">
+            <div class="details">
+                <span class="label">ইমেইল (Email)</span>
+                <span class="value" id="stexEmail">hbxmethod@gmail.com</span>
+            </div>
+            <button class="copy-btn" onclick="copyFast('stexEmail')">কপি</button>
         </div>
-        <button class="copy-btn" onclick="copyFast('emailText')">
-            <svg viewBox="0 0 24 24"><path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"/></svg>
-            কপি
-        </button>
-    </div>
 
-    <div class="info-group">
-        <div class="details">
-            <span class="label">পাসওয়ার্ড (Password)</span>
-            <span class="value" id="passText">hbx_marketiing</span>
+        <div class="info-group">
+            <div class="details">
+                <span class="label">পাসওয়ার্ড (Password)</span>
+                <span class="value" id="stexPass">hbx_marketiing</span>
+            </div>
+            <button class="copy-btn" onclick="copyFast('stexPass')">কপি</button>
         </div>
-        <button class="copy-btn" onclick="copyFast('passText')">
-            <svg viewBox="0 0 24 24"><path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"/></svg>
-            কপি
-        </button>
+
+        <button onclick="openLink('https://stexsms.com/mauth/login')" class="login-btn">StexSMS লগইন করুন ➔</button>
     </div>
 
-    <!-- ইনস্ট্যান্ট লগইন বাটন (Zero Delay) -->
-    <button onclick="openInstantLogin()" class="login-btn">লগইন করুন ➔</button>
+    <!-- সার্ভিস ২: MK Network (নতুন যুক্ত করা হয়েছে) -->
+    <div class="card">
+        <div class="header-icon">🌐</div>
+        <h2>MK Network Access</h2>
 
-    <!-- অ্যাডের জন্য আলাদা বাটন (Rewarded Ad) -->
+        <div class="info-group">
+            <div class="details">
+                <span class="label">ইমেইল (Email)</span>
+                <span class="value" id="mkEmail">rakibhasanroky009@gmail.com</span>
+            </div>
+            <button class="copy-btn" onclick="copyFast('mkEmail')">কপি</button>
+        </div>
+
+        <div class="info-group">
+            <div class="details">
+                <span class="label">পাসওয়ার্ড (Password)</span>
+                <span class="value" id="mkPass">Roky#*#1#</span>
+            </div>
+            <button class="copy-btn" onclick="copyFast('mkPass')">কপি</button>
+        </div>
+
+        <button onclick="openLink('https://mknetworkbd.com')" class="login-btn mk-btn">MK Network লগইন করুন ➔</button>
+    </div>
+
+    <!-- অ্যাড সাপোর্ট বাটন -->
     <button onclick="playRewardedAd()" class="support-btn">
-        <span>🎁</span> একটি অ্যাড দেখে সাপোর্ট করুন
+        🎁 একটি অ্যাড দেখে সাপোর্ট করুন
     </button>
+
 </div>
 
 <div id="toast">✅ সফলভাবে কপি হয়েছে!</div>
 
 <script>
-    // --- Telegram WebApp Initialize ---
     const tg = window.Telegram.WebApp;
-    tg.expand(); // টেলিগ্রাম মিনি অ্যাপ ফুলস্ক্রিন করা
+    tg.expand();
 
-    // --- ১. In-App Interstitial Ad (স্বয়ংক্রিয়ভাবে ব্যাকগ্রাউন্ডে চলবে) ---
+    // Interstitial Ad
     document.addEventListener("DOMContentLoaded", function() {
         if (typeof show_10714987 === 'function') {
             show_10714987({
               type: 'inApp',
-              inAppSettings: {
-                frequency: 2,
-                capping: 0.1,
-                interval: 30,
-                timeout: 5,
-                everyPage: false
-              }
-            }).catch(e => console.log("Interstitial Error:", e));
+              inAppSettings: { frequency: 2, capping: 0.1, interval: 30, timeout: 5, everyPage: false }
+            }).catch(e => console.log("Ad Error:", e));
         }
     });
 
-    // --- ২. Instant Login Function (কোনো অ্যাড ছাড়া ডাইরেক্ট লগইন) ---
-    function openInstantLogin() {
-        const url = "https://stexsms.com/mauth/login";
-        // টেলিগ্রামের ভেতর দিয়ে ওপেন করার চেষ্টা করবে, না পারলে ব্রাউজারের নতুন ট্যাবে
+    // লিং ওপেন করার ফাংশন
+    function openLink(url) {
         if (tg.initDataUnsafe && Object.keys(tg.initDataUnsafe).length > 0) {
             tg.openLink(url);
         } else {
-            window.open(url, "_blank", "noopener,noreferrer");
+            window.open(url, "_blank");
         }
     }
 
-    // --- ৩. Rewarded Ad Function (শুধু নিচের সাপোর্ট বাটনে ক্লিক করলে অ্যাড আসবে) ---
+    // Rewarded Ad
     function playRewardedAd() {
         if (typeof show_10714987 === 'function') {
             show_10714987('pop').then(() => {
-                showToastMessage("সাপোর্ট করার জন্য অনেক ধন্যবাদ! ❤️");
+                showToastMessage("সাপোর্ট করার জন্য ধন্যবাদ! ❤️");
             }).catch(e => {
-                showToastMessage("অ্যাড লোড হয়নি, পরে আবার চেষ্টা করুন!");
+                showToastMessage("অ্যাড লোড হয়নি!");
             });
         } else {
-            showToastMessage("অ্যাড সিস্টেম এখনও রেডি হয়নি!");
+            showToastMessage("সিস্টেম রেডি হচ্ছে...");
         }
     }
 
-    // --- Fast Copy Function ---
+    // কপি ফাংশন
     function copyFast(elementId) {
         var text = document.getElementById(elementId).innerText;
         var tempInput = document.createElement("input");
-        tempInput.style.position = "absolute";
-        tempInput.style.left = "-9999px";
         tempInput.value = text;
         document.body.appendChild(tempInput);
-        
         tempInput.select();
-        tempInput.setSelectionRange(0, 99999);
-        
-        try {
-            document.execCommand('copy');
-            showToastMessage("✅ সফলভাবে কপি হয়েছে!");
-        } catch (err) {
-            alert("কপি করা যায়নি!");
-        }
+        document.execCommand('copy');
         document.body.removeChild(tempInput);
+        showToastMessage("✅ কপি করা হয়েছে!");
     }
 
-    // --- Dynamic Toast Message ---
     let toastTimeout;
     function showToastMessage(msg) {
         var toast = document.getElementById("toast");
         toast.innerText = msg;
         toast.classList.add("show");
         clearTimeout(toastTimeout);
-        toastTimeout = setTimeout(function() {
-            toast.classList.remove("show");
-        }, 2500);
+        toastTimeout = setTimeout(() => { toast.classList.remove("show"); }, 2500);
     }
 </script>
 
