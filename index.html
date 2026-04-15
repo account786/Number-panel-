@@ -3,190 +3,209 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>NUMBER PANEL</title>
+    <title>StexSMS Premium Access</title>
     <style>
-        /* পুরো স্ক্রিন জুড়ে সেটআপ */
-        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
-        body { 
-            font-family: 'Segoe UI', Roboto, sans-serif; 
-            background: #121212; 
-            color: #fff; 
-            margin: 0; 
-            padding: 15px; 
+        /* মডার্ন ফন্ট ও জিরো ডিলে রিসেট */
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            /* প্রিমিয়াম গ্রেডিয়েন্ট ব্যাকগ্রাউন্ড */
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             display: flex;
-            flex-direction: column;
+            justify-content: center;
             align-items: center;
-            min-height: 100vh;
+            height: 100vh;
+            overflow: hidden;
         }
 
-        .header {
+        /* গ্লাসমরফিজম (Glassmorphism) কার্ড ডিজাইন */
+        .card {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 40px 30px;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.2);
             width: 100%;
-            padding: 15px;
-            text-align: left;
-            font-weight: bold;
-            font-size: 18px;
-            border-bottom: 1px solid #333;
-            margin-bottom: 20px;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
-
-        /* কার্ড ডিজাইন যা ফোনের স্ক্রিনের সাথে অটো মিলবে */
-        .card { 
-            background: #1e1e1e; 
-            width: 100%; 
-            max-width: 600px; /* পিসি বা বড় স্ক্রিনেও সুন্দর দেখাবে */
-            padding: 25px; 
-            border-radius: 20px; 
-            text-align: center; 
-            border: 1px solid #333; 
-            margin-bottom: 25px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-        }
-
-        h3 { margin-top: 0; margin-bottom: 25px; color: #00e676; font-size: 24px; }
-        
-        .box { 
-            background: #252525; 
-            padding: 15px; 
-            border-radius: 12px; 
-            margin-bottom: 15px; 
-            display: flex; 
-            justify-content: space-between; 
-            align-items: center; 
-            border: 1px solid #3a3a3a; 
-        }
-
-        .input-text { 
-            font-size: 16px; 
-            color: #fff; 
-            border:none; 
-            background:transparent; 
-            width: 70%; 
-            outline: none; 
-            font-family: monospace;
-        }
-        
-        .btn-copy { 
-            background: #00e676; 
-            color: #000; 
-            border: none; 
-            padding: 10px 20px; 
-            border-radius: 8px; 
-            font-size: 14px; 
-            cursor: pointer; 
-            font-weight: bold; 
-            transition: 0.2s;
-        }
-
-        .btn-copy:active { background: #00b35c; transform: scale(0.9); }
-        
-        .hint { font-size: 14px; color: #888; margin: 15px 0; }
-        
-        /* লগইন বাটন - যা নতুন ট্যাব ওপেন করবে */
-        .btn-main { 
-            width: 100%; 
-            background: #2979ff; 
-            color: white; 
-            border: none; 
-            padding: 18px; 
-            border-radius: 15px; 
-            font-size: 18px; 
-            font-weight: bold; 
-            cursor: pointer; 
-            transition: 0.3s; 
-            display: block;
-            text-decoration: none;
-        }
-
-        .btn-stex { background: #ff5722; }
-
-        .btn-main:hover { opacity: 0.9; }
-        .btn-main:active { transform: scale(0.98); }
-
-        /* টোস্ট মেসেজ */
-        #toast {
-            visibility: hidden;
-            min-width: 200px;
-            background-color: #00e676;
-            color: #000;
+            max-width: 420px;
             text-align: center;
-            border-radius: 50px;
-            padding: 15px;
-            position: fixed;
-            z-index: 100;
-            left: 50%;
-            bottom: 30px;
-            transform: translateX(-50%);
-            font-size: 16px;
-            font-weight: bold;
-            opacity: 0;
-            transition: opacity 0.4s;
+            transform: translateY(0);
+            transition: transform 0.3s ease;
+        }
+        .card:hover { transform: translateY(-5px); }
+
+        .header-icon {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 0 auto 15px auto;
+            color: white;
+            font-size: 24px;
+            box-shadow: 0 10px 20px rgba(118, 75, 162, 0.3);
         }
 
-        #toast.show { visibility: visible; opacity: 1; }
+        h2 { color: #2d3748; font-size: 24px; margin-bottom: 25px; font-weight: 700; }
+
+        /* ইনফো বক্সের ডিজাইন */
+        .info-group {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: #f7fafc;
+            padding: 15px 20px;
+            border-radius: 12px;
+            margin-bottom: 15px;
+            border: 1px solid #e2e8f0;
+            transition: all 0.2s ease;
+        }
+        .info-group:hover { border-color: #cbd5e0; background: #fff; box-shadow: 0 4px 6px rgba(0,0,0,0.02); }
+
+        .details { text-align: left; }
+        .label { font-size: 11px; color: #718096; text-transform: uppercase; font-weight: 700; letter-spacing: 1px; display: block; margin-bottom: 4px; }
+        .value { font-size: 16px; color: #1a202c; font-weight: 600; }
+
+        /* মডার্ন কপি বাটন */
+        .copy-btn {
+            background: #edf2f7;
+            color: #4a5568;
+            border: none;
+            padding: 10px 16px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 13px;
+            font-weight: 700;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        .copy-btn:hover { background: #e2e8f0; color: #2d3748; }
+        .copy-btn:active { transform: scale(0.95); }
+
+        /* অ্যাকশন বাটন (লগইন) */
+        .login-btn {
+            display: block;
+            width: 100%;
+            background: linear-gradient(135deg, #38b2ac 0%, #319795 100%);
+            color: white;
+            text-decoration: none;
+            padding: 16px;
+            border-radius: 12px;
+            font-size: 18px;
+            font-weight: bold;
+            margin-top: 30px;
+            transition: all 0.3s ease;
+            box-shadow: 0 10px 20px rgba(49, 151, 149, 0.3);
+        }
+        .login-btn:hover { background: linear-gradient(135deg, #319795 0%, #2c7a7b 100%); box-shadow: 0 15px 25px rgba(49, 151, 149, 0.4); transform: translateY(-2px); }
+        .login-btn:active { transform: translateY(0); }
+
+        /* টোস্ট নোটিফিকেশন (Toast Message) */
+        #toast {
+            position: fixed;
+            bottom: -60px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #2d3748;
+            color: white;
+            padding: 12px 24px;
+            border-radius: 30px;
+            font-size: 14px;
+            font-weight: 600;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+            transition: bottom 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            z-index: 1000;
+        }
+        #toast.show { bottom: 30px; }
+
+        /* SVG আইকন সাপোর্ট */
+        svg { width: 16px; height: 16px; fill: currentColor; }
     </style>
 </head>
 <body>
 
-    <div class="header">Number Panel</div>
+<div class="card">
+    <div class="header-icon">
+        <!-- ইউজার আইকন -->
+        <svg viewBox="0 0 24 24" style="width: 30px; height: 30px;"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>
+    </div>
+    <h2>StexSMS Access</h2>
 
-    <!-- MK Network Section -->
-    <div class="card">
-        <h3>MK Network Access</h3>
-        <div class="box">
-            <input type="text" value="hasankhan5258786@gmail.com" id="email1" class="input-text" readonly>
-            <button class="btn-copy" onclick="copyValue('email1')">Copy</button>
+    <!-- ইমেইল সেকশন -->
+    <div class="info-group">
+        <div class="details">
+            <span class="label">ইমেইল (Email)</span>
+            <span class="value" id="emailText">hbxmethod@gmail.com</span>
         </div>
-        <div class="box">
-            <input type="text" value="Nayem@1122" id="pass1" class="input-text" readonly>
-            <button class="btn-copy" onclick="copyValue('pass1')">Copy</button>
-        </div>
-        <p class="hint">তথ্যগুলো কপি করে নিচের বাটনে ক্লিক করুন।</p>
-        <!-- target="_blank" এর মাধ্যমে নতুন ট্যাব ওপেন হবে -->
-        <a href="https://mknetworkbd.com/" target="_blank" class="btn-main">MK Network লগইন</a>
+        <button class="copy-btn" onclick="copyFast('emailText')">
+            <svg viewBox="0 0 24 24"><path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"/></svg>
+            কপি
+        </button>
     </div>
 
-    <!-- StexSMS Section -->
-    <div class="card">
-        <h3>StexSMS Access</h3>
-        <div class="box">
-            <input type="text" value="nayemhasan7t8@gmail.com" id="email2" class="input-text" readonly>
-            <button class="btn-copy" onclick="copyValue('email2')">Copy</button>
+    <!-- পাসওয়ার্ড সেকশন -->
+    <div class="info-group">
+        <div class="details">
+            <span class="label">পাসওয়ার্ড (Password)</span>
+            <span class="value" id="passText">hbx_marketiing</span>
         </div>
-        <div class="box">
-            <input type="text" value="Nayem@1122" id="pass2" class="input-text" readonly>
-            <button class="btn-copy" onclick="copyValue('pass2')">Copy</button>
-        </div>
-        <p class="hint">তথ্যগুলো কপি করে নিচের বাটনে ক্লিক করুন।</p>
-        <a href="https://stexsms.com/" target="_blank" class="btn-main btn-stex">StexSMS লগইন</a>
+        <button class="copy-btn" onclick="copyFast('passText')">
+            <svg viewBox="0 0 24 24"><path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"/></svg>
+            কপি
+        </button>
     </div>
 
-    <div id="toast">সাফল্যের সাথে কপি হয়েছে!</div>
+    <!-- লগইন বাটন (Zero Delay) -->
+    <!-- target="_blank" এবং rel="noopener noreferrer" দেওয়া হয়েছে ফাস্ট পারফরম্যান্সের জন্য -->
+    <a href="https://stexsms.com/mauth/login" target="_blank" rel="noopener noreferrer" class="login-btn">লগইন করুন ➔</a>
+</div>
 
-    <script>
-        function copyValue(id) {
-            var input = document.getElementById(id);
-            
-            // সব ব্রাউজারের জন্য কার্যকরী কপি সিস্টেম
-            if (navigator.clipboard && window.isSecureContext) {
-                navigator.clipboard.writeText(input.value).then(() => {
-                    showToast();
-                });
-            } else {
-                input.select();
-                input.setSelectionRange(0, 99999);
-                document.execCommand("copy");
-                showToast();
-            }
-        }
+<!-- টোস্ট মেসেজ -->
+<div id="toast">✅ সফলভাবে কপি হয়েছে!</div>
 
-        function showToast() {
-            var x = document.getElementById("toast");
-            x.className = "show";
-            setTimeout(function(){ x.className = x.className.replace("show", ""); }, 2000);
+<script>
+    // সুপার ফাস্ট কপি ফাংশন
+    function copyFast(elementId) {
+        var text = document.getElementById(elementId).innerText;
+        
+        // ফাস্ট এক্সিকিউশনের জন্য ইনপুট তৈরি
+        var tempInput = document.createElement("input");
+        tempInput.style.position = "absolute";
+        tempInput.style.left = "-9999px";
+        tempInput.value = text;
+        document.body.appendChild(tempInput);
+        
+        tempInput.select();
+        tempInput.setSelectionRange(0, 99999);
+        
+        try {
+            document.execCommand('copy');
+            showToast(); // কপি হলে সুন্দর নোটিফিকেশন আসবে
+        } catch (err) {
+            alert("কপি করা যায়নি!");
         }
-    </script>
+        
+        document.body.removeChild(tempInput);
+    }
+
+    // টোস্ট নোটিফিকেশন দেখানোর ফাংশন (স্মুথ এনিমেশন)
+    let toastTimeout;
+    function showToast() {
+        var toast = document.getElementById("toast");
+        toast.classList.add("show");
+        
+        // আগের কোনো টাইমার থাকলে সেটা রিসেট করা
+        clearTimeout(toastTimeout);
+        
+        // ২ সেকেন্ড পর মেসেজ চলে যাবে
+        toastTimeout = setTimeout(function() {
+            toast.classList.remove("show");
+        }, 2000);
+    }
+</script>
 
 </body>
 </html>
