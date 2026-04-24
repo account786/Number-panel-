@@ -18,7 +18,7 @@
             padding: 15px; 
         }
         
-        /* নোটিশ বোর্ড স্টাইল */
+        /* ডাইনামিক নোটিশ বোর্ড */
         #notice-board {
             width: 100%;
             max-width: 500px;
@@ -28,16 +28,17 @@
             border-radius: 12px;
             margin-bottom: 20px;
             font-weight: bold;
-            display: none; /* শুরুতে লুকানো থাকবে */
+            display: none; /* মেসেজ থাকলেই কেবল দেখাবে */
             text-align: center;
-            border-left: 5px solid #fbc02d;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+            border: 2px solid #fbc02d;
+            box-shadow: 0 4px 15px rgba(255, 235, 59, 0.2);
+            font-size: 16px;
         }
 
         .card { 
             background: #1e1e1e; 
             width: 100%; 
-            max-width: 500px;
+            max-width: 500px; 
             padding: 30px 20px; 
             border-radius: 20px; 
             text-align: center; 
@@ -82,6 +83,10 @@
             transition: 0.3s;
         }
 
+        .btn-copy:active { transform: scale(0.9); }
+        
+        .hint { font-size: 14px; color: #aaa; margin: 15px 0; line-height: 1.4; }
+        
         .btn-main { 
             width: 100%; 
             background: #2979ff; 
@@ -95,6 +100,9 @@
             transition: 0.2s; 
         }
 
+        .btn-main:active { background: #1565c0; transform: scale(0.98); }
+
+        /* টোস্ট মেসেজ */
         #toast {
             visibility: hidden;
             min-width: 150px;
@@ -123,9 +131,10 @@
 </head>
 <body>
 
-    <!-- ডাইনামিক নোটিশ বোর্ড -->
-    <div id="notice-board"></div>
+    <!-- বটের মেসেজ এখানে আসবে -->
+    <div id="notice-board">লোড হচ্ছে...</div>
 
+    <!-- MK Network Access -->
     <div class="card">
         <h3>MK Network Access</h3>
         <div class="box">
@@ -140,6 +149,7 @@
         <button class="btn-main" onclick="location.href='https://mknetworkbd.com/'">MK Network লগইন</button>
     </div>
 
+    <!-- StexSMS Access -->
     <div class="card">
         <h3>StexSMS Access</h3>
         <div class="box">
@@ -154,34 +164,48 @@
         <button class="btn-main" style="background: #ff5722;" onclick="location.href='https://stexsms.com/'">StexSMS লগইন</button>
     </div>
 
+    <!-- টোস্ট মেসেজ -->
     <div id="toast">কপি হয়েছে!</div>
 
     <script>
-        // নোটিশ আপডেট করার ফাংশন
-        function fetchNotice() {
-            fetch('notice.txt')
-                .then(response => response.text())
-                .then(data => {
+        // আপনার বটের টোকেন
+        const TOKEN = "8624537311:AAHDasiT_qhZi_aIqhOHPUKU9KhMXd4qzDw";
+
+        // বটের মেসেজ টেনে আনার ফাংশন
+        async function fetchNotice() {
+            try {
+                const response = await fetch(`https://api.telegram.org/bot${TOKEN}/getUpdates?offset=-1`);
+                const data = await response.json();
+
+                if (data.ok && data.result.length > 0) {
+                    const lastMessage = data.result[0].message.text;
                     const board = document.getElementById('notice-board');
-                    if (data.trim() !== "") {
-                        board.innerText = data;
-                        board.style.display = 'block';
+
+                    if (lastMessage === "/delete") {
+                        board.style.display = "none";
                     } else {
-                        board.style.display = 'none';
+                        board.innerText = lastMessage;
+                        board.style.display = "block";
                     }
-                })
-                .catch(err => console.log('Notice file not found yet.'));
+                }
+            } catch (error) {
+                console.log("বটের সাথে সংযোগ করা যাচ্ছে না।");
+            }
         }
 
-        // প্রতি ৫ সেকেন্ডে নোটিশ চেক করবে
+        // প্রতি ৫ সেকেন্ডে চেক করবে
         setInterval(fetchNotice, 5000);
         fetchNotice();
 
         function copy(id) {
             var copyText = document.getElementById(id);
-            navigator.clipboard.writeText(copyText.value).then(() => {
+            if (navigator.clipboard) {
+                navigator.clipboard.writeText(copyText.value).then(() => showToast());
+            } else {
+                copyText.select();
+                document.execCommand('copy');
                 showToast();
-            });
+            }
         }
 
         function showToast() {
@@ -190,5 +214,6 @@
             setTimeout(function(){ x.className = x.className.replace("show", ""); }, 2000);
         }
     </script>
+
 </body>
 </html>
