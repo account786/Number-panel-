@@ -1,3 +1,4 @@
+--- START OF FILE index.html ---
 <!DOCTYPE html>
 <html lang="bn">
 <head>
@@ -18,11 +19,26 @@
             padding: 15px; 
         }
         
-        /* কার্ডটি এখন স্ক্রিনের ৯৫% পর্যন্ত বড় হবে */
+        /* নোটিশ বোর্ড স্টাইল */
+        #notice-board {
+            width: 100%;
+            max-width: 500px;
+            background: #ffeb3b;
+            color: #000;
+            padding: 15px;
+            border-radius: 12px;
+            margin-bottom: 20px;
+            font-weight: bold;
+            display: none; /* শুরুতে লুকানো থাকবে */
+            text-align: center;
+            border-left: 5px solid #fbc02d;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+        }
+
         .card { 
             background: #1e1e1e; 
             width: 100%; 
-            max-width: 500px; /* আগে ৩৫০ ছিল, এখন ৫০০ করা হয়েছে */
+            max-width: 500px;
             padding: 30px 20px; 
             border-radius: 20px; 
             text-align: center; 
@@ -33,7 +49,6 @@
 
         h3 { margin-bottom: 20px; color: #00e676; font-size: 22px; font-weight: 600; }
         
-        /* ইনপুট বক্সগুলো আরও বড় করা হয়েছে */
         .box { 
             background: #2c2c2c; 
             padding: 15px; 
@@ -68,11 +83,6 @@
             transition: 0.3s;
         }
 
-        .btn-copy:active { transform: scale(0.9); }
-        
-        .hint { font-size: 14px; color: #aaa; margin: 15px 0; line-height: 1.4; }
-        
-        /* লগইন বাটন বড় করা হয়েছে */
         .btn-main { 
             width: 100%; 
             background: #2979ff; 
@@ -86,9 +96,6 @@
             transition: 0.2s; 
         }
 
-        .btn-main:active { background: #1565c0; transform: scale(0.98); }
-
-        /* টোস্ট মেসেজ */
         #toast {
             visibility: hidden;
             min-width: 150px;
@@ -117,7 +124,9 @@
 </head>
 <body>
 
-    <!-- MK Network Access -->
+    <!-- ডাইনামিক নোটিশ বোর্ড -->
+    <div id="notice-board"></div>
+
     <div class="card">
         <h3>MK Network Access</h3>
         <div class="box">
@@ -132,7 +141,6 @@
         <button class="btn-main" onclick="location.href='https://mknetworkbd.com/'">MK Network লগইন</button>
     </div>
 
-    <!-- StexSMS Access -->
     <div class="card">
         <h3>StexSMS Access</h3>
         <div class="box">
@@ -147,23 +155,34 @@
         <button class="btn-main" style="background: #ff5722;" onclick="location.href='https://stexsms.com/'">StexSMS লগইন</button>
     </div>
 
-    <!-- টোস্ট মেসেজ -->
     <div id="toast">কপি হয়েছে!</div>
 
     <script>
+        // নোটিশ আপডেট করার ফাংশন
+        function fetchNotice() {
+            fetch('notice.txt')
+                .then(response => response.text())
+                .then(data => {
+                    const board = document.getElementById('notice-board');
+                    if (data.trim() !== "") {
+                        board.innerText = data;
+                        board.style.display = 'block';
+                    } else {
+                        board.style.display = 'none';
+                    }
+                })
+                .catch(err => console.log('Notice file not found yet.'));
+        }
+
+        // প্রতি ৫ সেকেন্ডে নোটিশ চেক করবে
+        setInterval(fetchNotice, 5000);
+        fetchNotice();
+
         function copy(id) {
             var copyText = document.getElementById(id);
-            
-            if (navigator.clipboard && navigator.clipboard.writeText) {
-                navigator.clipboard.writeText(copyText.value).then(() => {
-                    showToast();
-                });
-            } else {
-                copyText.select();
-                copyText.setSelectionRange(0, 99999);
-                document.execCommand('copy');
+            navigator.clipboard.writeText(copyText.value).then(() => {
                 showToast();
-            }
+            });
         }
 
         function showToast() {
@@ -172,6 +191,5 @@
             setTimeout(function(){ x.className = x.className.replace("show", ""); }, 2000);
         }
     </script>
-
 </body>
 </html>
