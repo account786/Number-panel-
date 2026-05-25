@@ -2,185 +2,238 @@
 <html lang="bn">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Access Panel</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Professional Access Panel</title>
     <style>
-        * { box-sizing: border-box; }
-        body { 
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
-            background: #121212; 
-            color: #fff; 
-            display: flex; 
-            flex-direction: column; 
-            align-items: center; 
-            min-height: 100vh; 
-            margin: 0; 
-            padding: 15px; 
+        :root {
+            --bg-color: #080a0f;
+            --card-bg: rgba(23, 33, 43, 0.9);
+            --tg-blue: #0088cc;
+            --mk-color: #00e676;
+            --stex-color: #ff5722;
+            --voltx-color: #bb86fc;
+            --text-main: #ffffff;
+            --notice-red: #ff3b30;
         }
+
+        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
         
-        /* ডাইনামিক নোটিশ বোর্ড */
+        body { 
+            font-family: 'Segoe UI', Roboto, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            margin: 0;
+            padding: 10px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding-bottom: 80px; /* নিচের নোটিশের জন্য জায়গা */
+        }
+
+        /* টেলিগ্রাম নোটিশ বোর্ড (ডাইনামিক) */
         #notice-board {
             width: 100%;
-            max-width: 500px;
-            background: #ffeb3b;
-            color: #000;
-            padding: 15px;
+            max-width: 420px;
+            background: rgba(255, 214, 0, 0.15);
+            border: 1px solid #ffd600;
+            color: #ffd600;
+            padding: 10px;
             border-radius: 12px;
-            margin-bottom: 20px;
-            font-weight: bold;
-            display: none; /* মেসেজ থাকলেই কেবল দেখাবে */
+            margin-bottom: 15px;
+            font-size: 13px;
             text-align: center;
-            border: 2px solid #fbc02d;
-            box-shadow: 0 4px 15px rgba(255, 235, 59, 0.2);
-            font-size: 16px;
+            display: none;
         }
 
-        .card { 
-            background: #1e1e1e; 
-            width: 100%; 
-            max-width: 500px; 
-            padding: 30px 20px; 
-            border-radius: 20px; 
-            text-align: center; 
-            border: 1px solid #333; 
-            margin-bottom: 25px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+        .container { width: 100%; max-width: 420px; display: grid; gap: 12px; }
+
+        .card {
+            background: var(--card-bg);
+            border-radius: 20px;
+            padding: 15px;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
         }
 
-        h3 { margin-bottom: 20px; color: #00e676; font-size: 22px; font-weight: 600; }
-        
-        .box { 
-            background: #2c2c2c; 
-            padding: 15px; 
-            border-radius: 12px; 
-            margin-bottom: 15px; 
-            display: flex; 
-            justify-content: space-between; 
-            align-items: center; 
-            border: 1px solid #444; 
+        .card-header {
+            margin-bottom: 12px;
+            font-size: 15px;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            letter-spacing: 0.5px;
         }
 
-        .input-text { 
-            font-size: 16px; 
-            color: #eee; 
-            border:none; 
-            background:transparent; 
-            width: 75%; 
-            pointer-events: none; 
-            outline: none; 
-            font-family: monospace;
-        }
-        
-        .btn-copy { 
-            background: #00e676; 
-            color: #000; 
-            border: none; 
-            padding: 8px 16px; 
-            border-radius: 8px; 
-            font-size: 14px; 
-            cursor: pointer; 
-            font-weight: bold; 
-            transition: 0.3s;
+        /* কপি বক্স */
+        .copy-box {
+            background: #121922;
+            border: 2px solid rgba(255, 255, 255, 0.05);
+            border-radius: 12px;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 12px 15px;
+            cursor: pointer;
+            transition: 0.2s;
         }
 
-        .btn-copy:active { transform: scale(0.9); }
-        
-        .hint { font-size: 14px; color: #aaa; margin: 15px 0; line-height: 1.4; }
-        
-        .btn-main { 
-            width: 100%; 
-            background: #2979ff; 
-            color: white; 
-            border: none; 
-            padding: 16px; 
-            border-radius: 12px; 
-            font-size: 18px; 
-            font-weight: bold; 
-            cursor: pointer; 
-            transition: 0.2s; 
+        .copy-box:active { background: #1c2533; transform: scale(0.98); }
+
+        .copy-box span {
+            font-family: 'Courier New', monospace;
+            font-size: 14px;
+            color: #e0e0e0;
+            user-select: none; /* কীবোর্ড বাধা দিতে */
         }
 
-        .btn-main:active { background: #1565c0; transform: scale(0.98); }
+        .copy-label {
+            color: var(--tg-blue);
+            font-weight: 800;
+            font-size: 11px;
+            animation: pulse 1.5s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.6; transform: scale(1.05); }
+        }
+
+        .btn-launch {
+            width: 100%;
+            padding: 14px;
+            border-radius: 12px;
+            border: none;
+            color: #fff;
+            font-size: 14px;
+            font-weight: bold;
+            cursor: pointer;
+            margin-top: 5px;
+            text-transform: uppercase;
+        }
+
+        .bg-mk { background: linear-gradient(90deg, #1b5e20, #00e676); }
+        .bg-stex { background: linear-gradient(90deg, #bf360c, #ff5722); }
+        .bg-voltx { background: linear-gradient(90deg, #4a148c, #bb86fc); }
+
+        /* স্থায়ী লাল নোটিশ (নিচে) */
+        .footer-notice {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            background: var(--notice-red);
+            color: white;
+            padding: 15px;
+            text-align: center;
+            font-weight: bold;
+            font-size: 14px;
+            box-shadow: 0 -5px 15px rgba(255, 59, 48, 0.3);
+            z-index: 100;
+            border-radius: 15px 15px 0 0;
+        }
 
         /* টোস্ট মেসেজ */
         #toast {
             visibility: hidden;
-            min-width: 150px;
-            background-color: #00e676;
+            background: #ffffff;
             color: #000;
-            text-align: center;
+            padding: 10px 25px;
             border-radius: 50px;
-            padding: 12px 25px;
             position: fixed;
-            z-index: 10;
+            top: 50%;
             left: 50%;
-            bottom: 30px;
-            transform: translateX(-50%);
-            font-size: 15px;
+            transform: translate(-50%, -50%);
             font-weight: bold;
-            opacity: 0;
-            transition: opacity 0.4s, bottom 0.4s;
+            z-index: 1000;
+            box-shadow: 0 0 20px rgba(255,255,255,0.2);
+        }
+        #toast.show { visibility: visible; animation: fadeInOut 1.5s ease-in-out; }
+
+        @keyframes fadeInOut {
+            0% { opacity: 0; transform: translate(-50%, -20%); }
+            20% { opacity: 1; transform: translate(-50%, -50%); }
+            80% { opacity: 1; transform: translate(-50%, -50%); }
+            100% { opacity: 0; transform: translate(-50%, -80%); }
         }
 
-        #toast.show {
-            visibility: visible;
-            opacity: 1;
-            bottom: 50px;
+        /* কপি সাকসেস ইফেক্ট */
+        .copy-success {
+            border-color: #00e676 !important;
+            background: rgba(0, 230, 118, 0.1) !important;
         }
+
     </style>
 </head>
 <body>
 
-    <!-- বটের মেসেজ এখানে আসবে -->
+    <!-- টেলিগ্রাম থেকে আসা নোটিশ -->
     <div id="notice-board">লোড হচ্ছে...</div>
 
-    <!-- MK Network Access -->
-    <div class="card">
-        <h3>MK Network Access</h3>
-        <div class="box">
-            <input type="text" value="hasankhan5258786@gmail.com" id="email1" class="input-text" readonly>
-            <button class="btn-copy" onclick="copy('email1')">Copy</button>
+    <div class="container">
+        
+        <!-- MK Network -->
+        <div class="card">
+            <div class="card-header" style="color: var(--mk-color);">● MK Network</div>
+            <div class="copy-box" onclick="smartCopy('nayemhasan7t8@gmail.com', this)">
+                <span>nayemhasan7t8@gmail.com</span>
+                <div class="copy-label">COPY</div>
+            </div>
+            <div class="copy-box" onclick="smartCopy('Nayem@1122', this)">
+                <span>Nayem@1122</span>
+                <div class="copy-label">COPY</div>
+            </div>
+            <button class="btn-launch bg-mk" onclick="window.open('https://mknetworkbd.com/', '_blank')">LOGIN WEBSITE</button>
         </div>
-        <div class="box">
-            <input type="text" value="Nayem@1122" id="pass1" class="input-text" readonly>
-            <button class="btn-copy" onclick="copy('pass1')">Copy</button>
+
+        <!-- StexSMS -->
+        <div class="card">
+            <div class="card-header" style="color: var(--stex-color);">● StexSMS</div>
+            <div class="copy-box" onclick="smartCopy('nayemhasan7t8@gmail.com', this)">
+                <span>nayemhasan7t8@gmail.com</span>
+                <div class="copy-label">COPY</div>
+            </div>
+            <div class="copy-box" onclick="smartCopy('Nayem@1122', this)">
+                <span>Nayem@1122</span>
+                <div class="copy-label">COPY</div>
+            </div>
+            <button class="btn-launch bg-stex" onclick="window.open('https://stexsms.com/', '_blank')">LOGIN WEBSITE</button>
         </div>
-        <p class="hint">তথ্যগুলো কপি করে নিচের বাটনে ক্লিক করুন।</p>
-        <button class="btn-main" onclick="location.href='https://mknetworkbd.com/'">MK Network লগইন</button>
+
+        <!-- VoltxSMS -->
+        <div class="card">
+            <div class="card-header" style="color: var(--voltx-color);">● VoltxSMS</div>
+            <div class="copy-box" onclick="smartCopy('nayemhasan7t8@gmail.com', this)">
+                <span>nayemhasan7t8@gmail.com</span>
+                <div class="copy-label">COPY</div>
+            </div>
+            <div class="copy-box" onclick="smartCopy('Nayem@1122', this)">
+                <span>Nayem@1122</span>
+                <div class="copy-label">COPY</div>
+            </div>
+            <button class="btn-launch bg-voltx" onclick="window.open('https://voltxsms.com/', '_blank')">LOGIN WEBSITE</button>
+        </div>
+
     </div>
 
-    <!-- StexSMS Access -->
-    <div class="card">
-        <h3>StexSMS Access</h3>
-        <div class="box">
-            <input type="text" value="nayemhasan7t8@gmail.com" id="email2" class="input-text" readonly>
-            <button class="btn-copy" onclick="copy('email2')">Copy</button>
-        </div>
-        <div class="box">
-            <input type="text" value="Nayem@1122" id="pass2" class="input-text" readonly>
-            <button class="btn-copy" onclick="copy('pass2')">Copy</button>
-        </div>
-        <p class="hint">তথ্যগুলো কপি করে নিচের বাটনে ক্লিক করুন।</p>
-        <button class="btn-main" style="background: #ff5722;" onclick="location.href='https://stexsms.com/'">StexSMS লগইন</button>
+    <!-- স্থায়ী লাল নোটিশ -->
+    <div class="footer-notice">
+        জিমেইল এবং পাসওয়ার্ড কপি করে কাঙ্খিত ওয়েবসাইটে লগইন করে কাজ করুন
     </div>
 
-    <!-- টোস্ট মেসেজ -->
-    <div id="toast">কপি হয়েছে!</div>
+    <div id="toast">Copied! ✅</div>
 
     <script>
-        // আপনার বটের টোকেন
         const TOKEN = "8624537311:AAHDasiT_qhZi_aIqhOHPUKU9KhMXd4qzDw";
 
-        // বটের মেসেজ টেনে আনার ফাংশন
         async function fetchNotice() {
             try {
                 const response = await fetch(`https://api.telegram.org/bot${TOKEN}/getUpdates?offset=-1`);
                 const data = await response.json();
-
                 if (data.ok && data.result.length > 0) {
                     const lastMessage = data.result[0].message.text;
                     const board = document.getElementById('notice-board');
-
                     if (lastMessage === "/delete") {
                         board.style.display = "none";
                     } else {
@@ -188,32 +241,58 @@
                         board.style.display = "block";
                     }
                 }
-            } catch (error) {
-                console.log("বটের সাথে সংযোগ করা যাচ্ছে না।");
-            }
+            } catch (e) {}
         }
-
-        // প্রতি ৫ সেকেন্ডে চেক করবে
         setInterval(fetchNotice, 5000);
         fetchNotice();
 
-        function copy(id) {
-            var copyText = document.getElementById(id);
-            if (navigator.clipboard) {
-                navigator.clipboard.writeText(copyText.value).then(() => showToast());
+        // কীবোর্ড ছাড়া কপি করার স্মার্ট মেথড
+        function smartCopy(text, element) {
+            // ১. আধুনিক মেথড চেকিং
+            if (navigator.clipboard && window.isSecureContext) {
+                navigator.clipboard.writeText(text).then(() => {
+                    showFeedback(element);
+                }).catch(() => fallbackCopy(text, element));
             } else {
-                copyText.select();
-                document.execCommand('copy');
-                showToast();
+                fallbackCopy(text, element);
             }
         }
 
-        function showToast() {
-            var x = document.getElementById("toast");
-            x.className = "show";
-            setTimeout(function(){ x.className = x.className.replace("show", ""); }, 2000);
+        // ২. কীবোর্ড ছাড়া ফলব্যাক মেথড
+        function fallbackCopy(text, element) {
+            const textArea = document.createElement("textarea");
+            textArea.value = text;
+            // এই দুটি প্রপার্টি কীবোর্ড ওপেন হওয়া বন্ধ করবে
+            textArea.setAttribute('readonly', '');
+            textArea.style.position = 'absolute';
+            textArea.style.left = '-9999px';
+            textArea.style.fontSize = '16px'; // ব্রাউজার জুম হওয়া বন্ধ করবে
+            document.body.appendChild(textArea);
+            
+            textArea.select();
+            textArea.setSelectionRange(0, 99999);
+            
+            try {
+                document.execCommand('copy');
+                showFeedback(element);
+            } catch (err) {
+                console.error("Copy failed");
+            }
+            document.body.removeChild(textArea);
+        }
+
+        function showFeedback(element) {
+            // টোস্ট
+            const toast = document.getElementById("toast");
+            toast.className = "show";
+            setTimeout(() => { toast.className = ""; }, 1500);
+
+            // বক্স হাইলাইট
+            element.classList.add('copy-success');
+            setTimeout(() => {
+                element.classList.remove('copy-success');
+            }, 600);
         }
     </script>
-
 </body>
 </html>
